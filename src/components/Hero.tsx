@@ -16,14 +16,6 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 animate-fade-up">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-sm text-muted-foreground">
-              Backed by Y Combinator • Trusted by 500+ Lenders
-            </span>
-          </div>
-
           {/* Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight mb-6 animate-fade-up animation-delay-100">
             Lending Made{" "}
