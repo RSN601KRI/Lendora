@@ -6,7 +6,6 @@ import SolutionSection from "@/components/SolutionSection";
 import KnowledgeGraph from "@/components/KnowledgeGraph";
 import UseCases from "@/components/UseCases";
 import ProofOfConcept from "@/components/ProofOfConcept";
-import JoinUs from "@/components/JoinUs";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
@@ -34,7 +33,6 @@ const Index = () => {
         <KnowledgeGraph />
         <UseCases />
         <ProofOfConcept />
-        <JoinUs />
         <ContactSection />
       </main>
       <Footer />
