@@ -5,10 +5,11 @@ import knowledgeGraphBg from "@/assets/knowledge-graph-bg.jpg";
 interface Node {
   id: string;
   label: string;
-  x: number;
-  y: number;
+  angle: number; // Starting angle in degrees
+  orbit: number; // Orbit radius (1 = innermost, 3 = outermost)
   size: number;
   color: string;
+  speed: number; // Rotation speed multiplier
 }
 
 interface Edge {
@@ -17,16 +18,18 @@ interface Edge {
 }
 
 const nodes: Node[] = [
-  { id: "lendora", label: "Lendora", x: 50, y: 50, size: 24, color: "primary" },
-  { id: "risk", label: "Risk Assessment", x: 25, y: 25, size: 16, color: "accent" },
-  { id: "ml", label: "Machine Learning", x: 75, y: 20, size: 14, color: "accent" },
-  { id: "fraud", label: "Fraud Detection", x: 15, y: 55, size: 14, color: "primary" },
-  { id: "credit", label: "Credit Scoring", x: 85, y: 45, size: 16, color: "accent" },
-  { id: "kyc", label: "KYC/AML", x: 30, y: 75, size: 12, color: "primary" },
-  { id: "analytics", label: "Analytics", x: 70, y: 80, size: 14, color: "accent" },
-  { id: "api", label: "REST APIs", x: 55, y: 85, size: 12, color: "primary" },
-  { id: "bank", label: "Banking", x: 10, y: 35, size: 10, color: "accent" },
-  { id: "fintech", label: "Fintech", x: 90, y: 65, size: 10, color: "primary" },
+  { id: "lendora", label: "Lendora", angle: 0, orbit: 0, size: 28, color: "primary", speed: 0 },
+  { id: "risk", label: "Risk Assessment", angle: 0, orbit: 1, size: 16, color: "accent", speed: 0.8 },
+  { id: "ml", label: "Machine Learning", angle: 72, orbit: 1, size: 14, color: "accent", speed: 0.8 },
+  { id: "fraud", label: "Fraud Detection", angle: 144, orbit: 1, size: 14, color: "primary", speed: 0.8 },
+  { id: "credit", label: "Credit Scoring", angle: 216, orbit: 1, size: 16, color: "accent", speed: 0.8 },
+  { id: "kyc", label: "KYC/AML", angle: 288, orbit: 1, size: 12, color: "primary", speed: 0.8 },
+  { id: "analytics", label: "Analytics", angle: 30, orbit: 2, size: 14, color: "accent", speed: 0.5 },
+  { id: "api", label: "REST APIs", angle: 90, orbit: 2, size: 12, color: "primary", speed: 0.5 },
+  { id: "bank", label: "Banking", angle: 150, orbit: 2, size: 10, color: "accent", speed: 0.5 },
+  { id: "fintech", label: "Fintech", angle: 210, orbit: 2, size: 10, color: "primary", speed: 0.5 },
+  { id: "data", label: "Data Lake", angle: 270, orbit: 2, size: 12, color: "accent", speed: 0.5 },
+  { id: "compliance", label: "Compliance", angle: 330, orbit: 2, size: 11, color: "primary", speed: 0.5 },
 ];
 
 const edges: Edge[] = [
@@ -34,28 +37,45 @@ const edges: Edge[] = [
   { from: "lendora", to: "ml" },
   { from: "lendora", to: "fraud" },
   { from: "lendora", to: "credit" },
-  { from: "lendora", to: "analytics" },
-  { from: "lendora", to: "api" },
-  { from: "risk", to: "fraud" },
-  { from: "risk", to: "credit" },
-  { from: "ml", to: "credit" },
-  { from: "fraud", to: "kyc" },
-  { from: "analytics", to: "api" },
-  { from: "kyc", to: "bank" },
+  { from: "lendora", to: "kyc" },
+  { from: "risk", to: "analytics" },
+  { from: "ml", to: "api" },
+  { from: "fraud", to: "bank" },
   { from: "credit", to: "fintech" },
-  { from: "api", to: "fintech" },
-  { from: "risk", to: "bank" },
+  { from: "kyc", to: "data" },
+  { from: "analytics", to: "compliance" },
 ];
 
 const KnowledgeGraph = () => {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const [rotation, setRotation] = useState(0);
+  const animationRef = useRef<number>();
 
-  const getNodePosition = (node: Node) => ({
-    x: `${node.x}%`,
-    y: `${node.y}%`,
-  });
+  const centerX = 50;
+  const centerY = 50;
+  const orbitRadii = [0, 15, 28]; // Orbit 0 = center, 1 = inner, 2 = outer
+
+  useEffect(() => {
+    const animate = () => {
+      setRotation((prev) => (prev + 0.3) % 360);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
+  const getNodePosition = (node: Node) => {
+    if (node.orbit === 0) return { x: centerX, y: centerY };
+    const angleRad = ((node.angle + rotation * node.speed) * Math.PI) / 180;
+    const radius = orbitRadii[node.orbit];
+    return {
+      x: centerX + radius * Math.cos(angleRad),
+      y: centerY + radius * Math.sin(angleRad),
+    };
+  };
 
   return (
     <section className="py-32 relative overflow-hidden" ref={ref}>
@@ -86,32 +106,48 @@ const KnowledgeGraph = () => {
         </div>
 
         {/* Interactive Knowledge Graph */}
-        <div className={`relative max-w-4xl mx-auto aspect-[16/10] transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+        <div className={`relative max-w-4xl mx-auto aspect-square md:aspect-[16/10] transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="absolute inset-0 glass rounded-3xl overflow-hidden border border-border/50 glow">
             <svg
-              ref={svgRef}
               className="w-full h-full"
               viewBox="0 0 100 100"
               preserveAspectRatio="xMidYMid meet"
             >
+              {/* Orbit Rings */}
+              {orbitRadii.slice(1).map((radius, index) => (
+                <circle
+                  key={`orbit-${index}`}
+                  cx={centerX}
+                  cy={centerY}
+                  r={radius}
+                  fill="none"
+                  stroke="hsl(var(--border) / 0.3)"
+                  strokeWidth="0.15"
+                  strokeDasharray="1 1"
+                  className="animate-pulse"
+                />
+              ))}
+
               {/* Edges */}
               {edges.map((edge, index) => {
                 const fromNode = nodes.find((n) => n.id === edge.from);
                 const toNode = nodes.find((n) => n.id === edge.to);
                 if (!fromNode || !toNode) return null;
 
+                const fromPos = getNodePosition(fromNode);
+                const toPos = getNodePosition(toNode);
                 const isHighlighted = hoveredNode === edge.from || hoveredNode === edge.to;
 
                 return (
                   <line
                     key={`${edge.from}-${edge.to}`}
-                    x1={fromNode.x}
-                    y1={fromNode.y}
-                    x2={toNode.x}
-                    y2={toNode.y}
+                    x1={fromPos.x}
+                    y1={fromPos.y}
+                    x2={toPos.x}
+                    y2={toPos.y}
                     stroke={isHighlighted ? "hsl(var(--accent))" : "hsl(var(--border))"}
-                    strokeWidth={isHighlighted ? 0.5 : 0.2}
-                    className={`transition-all duration-300 ${isVisible ? 'animate-line-draw' : ''}`}
+                    strokeWidth={isHighlighted ? 0.4 : 0.15}
+                    className="transition-all duration-300"
                     style={{ animationDelay: `${index * 100}ms` }}
                   />
                 );
@@ -119,6 +155,7 @@ const KnowledgeGraph = () => {
 
               {/* Nodes */}
               {nodes.map((node, index) => {
+                const pos = getNodePosition(node);
                 const isHovered = hoveredNode === node.id;
                 const isConnected = edges.some(
                   (e) =>
@@ -129,41 +166,43 @@ const KnowledgeGraph = () => {
                 return (
                   <g
                     key={node.id}
-                    className={`cursor-pointer transition-all duration-300 ${isVisible ? 'animate-node-pulse' : ''}`}
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    className="cursor-pointer"
                     onMouseEnter={() => setHoveredNode(node.id)}
                     onMouseLeave={() => setHoveredNode(null)}
                   >
                     {/* Glow effect */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
+                      cx={pos.x}
+                      cy={pos.y}
                       r={node.size / 6 + 2}
-                      fill={`hsl(var(--${node.color}) / ${isHovered ? 0.5 : 0.2})`}
-                      className="blur-sm"
+                      fill={`hsl(var(--${node.color}) / ${isHovered ? 0.6 : 0.25})`}
+                      className="blur-sm transition-all duration-300"
                     />
                     {/* Node circle */}
                     <circle
-                      cx={node.x}
-                      cy={node.y}
-                      r={node.size / 6}
-                      fill={`hsl(var(--${node.color}) / ${isHovered || isConnected ? 1 : 0.7})`}
+                      cx={pos.x}
+                      cy={pos.y}
+                      r={isHovered ? node.size / 5 : node.size / 6}
+                      fill={`hsl(var(--${node.color}) / ${isHovered || isConnected ? 1 : 0.8})`}
                       className="transition-all duration-300"
-                      style={{
-                        transform: isHovered ? "scale(1.3)" : "scale(1)",
-                        transformOrigin: `${node.x}px ${node.y}px`,
-                      }}
+                    />
+                    {/* Inner glow */}
+                    <circle
+                      cx={pos.x}
+                      cy={pos.y}
+                      r={node.size / 10}
+                      fill="hsl(var(--foreground) / 0.3)"
                     />
                     {/* Label */}
                     <text
-                      x={node.x}
-                      y={node.y + node.size / 6 + 4}
+                      x={pos.x}
+                      y={pos.y + node.size / 6 + 4}
                       textAnchor="middle"
                       fill="hsl(var(--foreground))"
-                      fontSize={node.id === "lendora" ? 3 : 2}
+                      fontSize={node.id === "lendora" ? 3.5 : 2}
                       fontFamily="Inter Tight, sans-serif"
-                      fontWeight={node.id === "lendora" ? 600 : 400}
-                      className={`transition-opacity duration-300 ${isHovered || isConnected || node.id === "lendora" ? "opacity-100" : "opacity-60"}`}
+                      fontWeight={node.id === "lendora" ? 700 : 500}
+                      className={`transition-opacity duration-300 ${isHovered || isConnected || node.id === "lendora" ? "opacity-100" : "opacity-70"}`}
                     >
                       {node.label}
                     </text>
