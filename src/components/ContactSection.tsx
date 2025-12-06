@@ -141,8 +141,8 @@ const ContactSection = () => {
                       <MapPin className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Address</div>
-                      <div>San Francisco, CA 94107</div>
+                      <div className="text-sm text-muted-foreground">Location</div>
+                      <div>India</div>
                     </div>
                   </div>
                 </div>
@@ -170,25 +170,6 @@ const ContactSection = () => {
                   >
                     <Github className="w-5 h-5" />
                   </a>
-                </div>
-              </div>
-
-              {/* Office Hours */}
-              <div className="glass rounded-3xl p-8 border border-border/50">
-                <h3 className="text-xl font-serif mb-4">Office Hours</h3>
-                <div className="space-y-2 text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Monday - Friday</span>
-                    <span>9:00 AM - 6:00 PM PST</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Saturday</span>
-                    <span>10:00 AM - 4:00 PM PST</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sunday</span>
-                    <span>Closed</span>
-                  </div>
                 </div>
               </div>
             </div>
