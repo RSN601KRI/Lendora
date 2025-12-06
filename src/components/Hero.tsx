@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
 
 const Hero = () => {
@@ -49,22 +49,14 @@ const Hero = () => {
             into the underwriting process.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-start gap-4 animate-fade-up animation-delay-300">
+          {/* CTA Button */}
+          <div className="animate-fade-up animation-delay-300">
             <Button
               size="lg"
               className="gradient-bg border-0 hover:opacity-90 transition-all hover:scale-105 text-base px-8 py-6 group glow"
             >
               Get Started
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="bg-background/20 border-border/50 hover:bg-background/40 text-base px-8 py-6 group backdrop-blur-sm"
-            >
-              <Play className="mr-2 w-4 h-4" />
-              Watch Demo
             </Button>
           </div>
 
