@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion } from "framer-motion";
 import knowledgeGraphBg from "@/assets/knowledge-graph-bg.jpg";
+import ScrollReveal from "./animations/ScrollReveal";
 
 interface Node {
   id: string;
   label: string;
-  angle: number; // Starting angle in degrees
-  orbit: number; // Orbit radius (1 = innermost, 3 = outermost)
+  angle: number;
+  orbit: number;
   size: number;
   color: string;
-  speed: number; // Rotation speed multiplier
+  speed: number;
 }
 
 interface Edge {
@@ -47,14 +48,13 @@ const edges: Edge[] = [
 ];
 
 const KnowledgeGraph = () => {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [rotation, setRotation] = useState(0);
   const animationRef = useRef<number>();
 
   const centerX = 50;
   const centerY = 50;
-  const orbitRadii = [0, 15, 28]; // Orbit 0 = center, 1 = inner, 2 = outer
+  const orbitRadii = [0, 15, 28];
 
   useEffect(() => {
     const animate = () => {
@@ -78,7 +78,7 @@ const KnowledgeGraph = () => {
   };
 
   return (
-    <section className="py-32 relative overflow-hidden" ref={ref}>
+    <section className="py-32 relative overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
@@ -91,7 +91,7 @@ const KnowledgeGraph = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-accent text-sm font-medium tracking-wider uppercase mb-4 block">
             Knowledge Graph
           </span>
@@ -103,10 +103,16 @@ const KnowledgeGraph = () => {
             Our AI-powered knowledge graph connects all aspects of lending - 
             from risk assessment to compliance, creating intelligent insights.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Interactive Knowledge Graph */}
-        <div className={`relative max-w-4xl mx-auto aspect-square md:aspect-[16/10] transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+        <motion.div 
+          className="relative max-w-4xl mx-auto aspect-square md:aspect-[16/10]"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           <div className="absolute inset-0 glass rounded-3xl overflow-hidden border border-border/50 glow">
             <svg
               className="w-full h-full"
@@ -129,7 +135,7 @@ const KnowledgeGraph = () => {
               ))}
 
               {/* Edges */}
-              {edges.map((edge, index) => {
+              {edges.map((edge) => {
                 const fromNode = nodes.find((n) => n.id === edge.from);
                 const toNode = nodes.find((n) => n.id === edge.to);
                 if (!fromNode || !toNode) return null;
@@ -148,13 +154,12 @@ const KnowledgeGraph = () => {
                     stroke={isHighlighted ? "hsl(var(--accent))" : "hsl(var(--border))"}
                     strokeWidth={isHighlighted ? 0.4 : 0.15}
                     className="transition-all duration-300"
-                    style={{ animationDelay: `${index * 100}ms` }}
                   />
                 );
               })}
 
               {/* Nodes */}
-              {nodes.map((node, index) => {
+              {nodes.map((node) => {
                 const pos = getNodePosition(node);
                 const isHovered = hoveredNode === node.id;
                 const isConnected = edges.some(
@@ -211,22 +216,28 @@ const KnowledgeGraph = () => {
               })}
             </svg>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Info */}
-        <div className={`grid md:grid-cols-3 gap-8 mt-16 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="text-center glass rounded-2xl p-6 border border-border/50 card-hover">
-            <div className="text-3xl font-serif gradient-text mb-2">15+</div>
-            <div className="text-sm text-muted-foreground">Data Sources Connected</div>
-          </div>
-          <div className="text-center glass rounded-2xl p-6 border border-border/50 card-hover">
-            <div className="text-3xl font-serif gradient-text mb-2">500K+</div>
-            <div className="text-sm text-muted-foreground">Data Points Analyzed</div>
-          </div>
-          <div className="text-center glass rounded-2xl p-6 border border-border/50 card-hover">
-            <div className="text-3xl font-serif gradient-text mb-2">Real-time</div>
-            <div className="text-sm text-muted-foreground">Graph Updates</div>
-          </div>
+        <div className="grid md:grid-cols-3 gap-8 mt-16">
+          {[
+            { value: "15+", label: "Data Sources Connected" },
+            { value: "500K+", label: "Data Points Analyzed" },
+            { value: "Real-time", label: "Graph Updates" },
+          ].map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="text-center glass rounded-2xl p-6 border border-border/50 card-hover"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 * index, duration: 0.5 }}
+              whileHover={{ y: -5 }}
+            >
+              <div className="text-3xl font-serif gradient-text mb-2">{stat.value}</div>
+              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

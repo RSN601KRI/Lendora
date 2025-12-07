@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, Linkedin, Twitter, Github } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ScrollReveal from "./animations/ScrollReveal";
 
 const ContactSection = () => {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -30,10 +30,10 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden" ref={ref}>
+    <section id="contact" className="py-32 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <ScrollReveal className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-4xl md:text-5xl font-serif mb-6">
             Let's Build{" "}
             <span className="text-primary italic">Together</span>
@@ -42,11 +42,16 @@ const ContactSection = () => {
             Have questions or ready to get started? Our team is here to help you 
             transform your lending operations.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="bg-card rounded-2xl p-8 border border-border">
               <h3 className="text-2xl font-serif mb-6">Send us a message</h3>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -102,16 +107,26 @@ const ContactSection = () => {
                 </Button>
               </form>
             </div>
-          </div>
+          </motion.div>
 
           {/* Contact Info */}
-          <div className={`transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <div className="space-y-6">
               {/* Quick Contact */}
               <div className="bg-card rounded-2xl p-8 border border-border">
                 <h3 className="text-2xl font-serif mb-6">Get in touch</h3>
                 <div className="space-y-6">
-                  <a href="mailto:hello@lendora.io" className="flex items-center gap-4 group">
+                  <motion.a 
+                    href="mailto:hello@lendora.io" 
+                    className="flex items-center gap-4 group"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                       <Mail className="w-5 h-5 text-primary" />
                     </div>
@@ -119,8 +134,13 @@ const ContactSection = () => {
                       <div className="text-sm text-muted-foreground">Email</div>
                       <div className="group-hover:text-primary transition-colors">hello@lendora.io</div>
                     </div>
-                  </a>
-                  <a href="tel:+1-800-LENDORA" className="flex items-center gap-4 group">
+                  </motion.a>
+                  <motion.a 
+                    href="tel:+1-800-LENDORA" 
+                    className="flex items-center gap-4 group"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                       <Phone className="w-5 h-5 text-primary" />
                     </div>
@@ -128,7 +148,7 @@ const ContactSection = () => {
                       <div className="text-sm text-muted-foreground">Phone</div>
                       <div className="group-hover:text-primary transition-colors">+1-800-LENDORA</div>
                     </div>
-                  </a>
+                  </motion.a>
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                       <MapPin className="w-5 h-5 text-primary" />
@@ -142,31 +162,34 @@ const ContactSection = () => {
               </div>
 
               {/* Social Links */}
-              <div className="bg-card rounded-2xl p-8 border border-border">
+              <motion.div 
+                className="bg-card rounded-2xl p-8 border border-border"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
                 <h3 className="text-xl font-serif mb-4">Follow us</h3>
                 <div className="flex gap-4">
-                  <a
-                    href="#"
-                    className="w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
-                  >
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
-                  >
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
-                  >
-                    <Github className="w-5 h-5" />
-                  </a>
+                  {[
+                    { icon: Twitter, href: "#" },
+                    { icon: Linkedin, href: "#" },
+                    { icon: Github, href: "#" },
+                  ].map((social, index) => (
+                    <motion.a
+                      key={index}
+                      href={social.href}
+                      className="w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <social.icon className="w-5 h-5" />
+                    </motion.a>
+                  ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
