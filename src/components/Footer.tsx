@@ -1,5 +1,6 @@
 import { Github, Linkedin, Twitter, Heart } from "lucide-react";
 import lendoraLogo from "@/assets/lendora-logo.png";
+import { Button } from "@/components/ui/button";
 
 const footerLinks = {
   Product: ["Features", "Pricing", "Integrations", "API Reference", "Documentation"],
@@ -8,11 +9,26 @@ const footerLinks = {
 
 const Footer = () => {
   return (
-    <footer className="relative border-t border-border/50 bg-card/30">
-      {/* Background gradient */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/5 blur-[150px] rounded-full" />
-
+    <footer className="relative border-t border-border bg-card">
       <div className="container mx-auto px-6 py-16 relative z-10">
+        {/* CTA Section */}
+        <div className="text-center mb-16 pb-16 border-b border-border">
+          <h2 className="text-3xl md:text-4xl font-serif mb-4">
+            Start processing loans in <span className="text-primary">5 minutes.</span>
+          </h2>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+            Get started with our free tier. No credit card required.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
+              Get Started Free
+            </Button>
+            <Button variant="outline" className="border-border hover:bg-secondary rounded-full px-8">
+              Contact Sales
+            </Button>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
@@ -20,7 +36,7 @@ const Footer = () => {
               <img 
                 src={lendoraLogo} 
                 alt="Lendora Logo" 
-                className="h-10 w-auto transition-transform group-hover:scale-105"
+                className="h-8 w-auto transition-transform group-hover:scale-105"
               />
               <span className="text-xl font-serif">Lendora</span>
             </a>
@@ -31,21 +47,21 @@ const Footer = () => {
             <div className="flex gap-3">
               <a
                 href="#"
-                className="w-10 h-10 rounded-xl glass border border-border/50 flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all"
+                className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-xl glass border border-border/50 flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all"
+                className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-xl glass border border-border/50 flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all"
+                className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-all"
                 aria-label="GitHub"
               >
                 <Github className="w-4 h-4" />
@@ -62,7 +78,7 @@ const Footer = () => {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-primary after:transition-all hover:after:w-full"
+                      className="text-muted-foreground hover:text-foreground transition-colors text-sm"
                     >
                       {link}
                     </a>
@@ -74,7 +90,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-border/50">
+        <div className="pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <span>© 2025 Lendora. All rights reserved.</span>
@@ -86,8 +102,8 @@ const Footer = () => {
             
             <div className="flex items-center gap-4">
               {/* Status indicator */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full glass text-sm border border-border/50">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-sm border border-border">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 <span className="text-muted-foreground">All systems operational</span>
               </div>
             </div>

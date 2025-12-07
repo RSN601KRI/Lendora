@@ -1,6 +1,5 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { ExternalLink, TrendingUp, Users, Clock, Shield } from "lucide-react";
-import partnershipImg from "@/assets/partnership.jpg";
+import { TrendingUp, Users, Clock, Shield, Bot, FileText, BarChart3 } from "lucide-react";
 
 const caseStudies = [
   {
@@ -41,13 +40,22 @@ const caseStudies = [
   },
 ];
 
-const integrations = [
-  { name: "Jira", description: "Project Management" },
-  { name: "Confluence", description: "Documentation" },
-  { name: "Trello", description: "Task Boards" },
-  { name: "Bitbucket", description: "Code Repository" },
-  { name: "Opsgenie", description: "Incident Management" },
-  { name: "Statuspage", description: "System Status" },
+const agents = [
+  {
+    icon: FileText,
+    title: "Invoice Agent",
+    description: "Automatically matches transactions to invoices, detects underpayments, and sends payment reminders via email or SMS.",
+  },
+  {
+    icon: Bot,
+    title: "Renewal Agent",
+    description: "Predicts loan renewals based on repayment patterns and engages borrowers with personalized retention offers.",
+  },
+  {
+    icon: BarChart3,
+    title: "Analytics Agent",
+    description: "Natural language queries for your financial data. Ask \"What was my NPA ratio last month?\" and get instant answers.",
+  },
 ];
 
 const ProofOfConcept = () => {
@@ -55,25 +63,12 @@ const ProofOfConcept = () => {
 
   return (
     <section id="proof" className="py-32 relative overflow-hidden" ref={ref}>
-      {/* Background */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <img 
-          src={partnershipImg} 
-          alt="Partnership" 
-          className="w-full h-full object-cover opacity-10"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
         <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
-            Proof of Concept
-          </span>
           <h2 className="text-4xl md:text-5xl font-serif mb-6">
             Trusted by{" "}
-            <span className="italic gradient-text">Industry Leaders</span>
+            <span className="text-primary italic">Industry Leaders</span>
           </h2>
           <p className="text-muted-foreground text-lg">
             Real results from financial institutions that have transformed their 
@@ -82,11 +77,11 @@ const ProofOfConcept = () => {
         </div>
 
         {/* Case Studies */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 mb-24">
           {caseStudies.map((study, index) => (
             <div
               key={study.company}
-              className={`glass rounded-3xl p-8 border border-border/50 hover:border-primary/50 transition-all duration-500 card-hover ${
+              className={`bg-card rounded-2xl p-8 border border-border hover:border-primary/30 transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${index * 150}ms` }}
@@ -105,16 +100,16 @@ const ProofOfConcept = () => {
                 {study.results.map((result) => (
                   <div key={result.label} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <result.icon className="w-4 h-4 text-accent" />
+                      <result.icon className="w-4 h-4 text-primary" />
                       <span className="text-sm text-muted-foreground">{result.label}</span>
                     </div>
-                    <span className="font-serif gradient-text font-medium">{result.value}</span>
+                    <span className="font-serif text-primary font-medium">{result.value}</span>
                   </div>
                 ))}
               </div>
 
               {/* Quote */}
-              <div className="pt-6 border-t border-border/50">
+              <div className="pt-6 border-t border-border">
                 <p className="text-sm text-muted-foreground italic mb-3">
                   "{study.quote}"
                 </p>
@@ -124,47 +119,34 @@ const ProofOfConcept = () => {
           ))}
         </div>
 
-        {/* Atlassian Integration Section */}
-        <div className={`glass rounded-3xl p-8 md:p-12 border border-border/50 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="text-accent text-sm font-medium tracking-wider uppercase mb-4 block">
-                Enterprise Integrations
-              </span>
-              <h3 className="text-3xl font-serif mb-4">
-                Works with Your <span className="gradient-text">Existing Tools</span>
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Lendora integrates seamlessly with Atlassian products and other enterprise 
-                tools your team already uses, ensuring smooth workflows and collaboration.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <span className="glass px-4 py-2 rounded-full text-sm border border-border/50">
-                  SOC 2 Certified
-                </span>
-                <span className="glass px-4 py-2 rounded-full text-sm border border-border/50">
-                  GDPR Compliant
-                </span>
-                <span className="glass px-4 py-2 rounded-full text-sm border border-border/50">
-                  ISO 27001
-                </span>
-              </div>
-            </div>
+        {/* AI Agents Section */}
+        <div className={`transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-serif mb-4">
+              Autonomous <span className="text-primary">Lending Agents</span>
+            </h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Delegate the busywork. Our AI agents handle collections, retention, and analytics 24/7.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {integrations.map((integration, index) => (
-                <div
-                  key={integration.name}
-                  className="glass rounded-xl p-4 border border-border/50 hover:border-accent/50 transition-all duration-300 hover:scale-105 cursor-pointer group"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-sm">{integration.name}</span>
-                    <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <span className="text-xs text-muted-foreground">{integration.description}</span>
-                </div>
-              ))}
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-card rounded-2xl p-8 border border-border md:col-span-1">
+              <div className="text-5xl font-serif text-primary mb-4">80%</div>
+              <div className="text-muted-foreground">Less manual operation time</div>
             </div>
+            {agents.map((agent, index) => (
+              <div
+                key={agent.title}
+                className="bg-card rounded-2xl p-8 border border-border hover:border-primary/30 transition-all duration-300"
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                  <agent.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h4 className="text-lg font-serif mb-2">{agent.title}</h4>
+                <p className="text-muted-foreground text-sm">{agent.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
