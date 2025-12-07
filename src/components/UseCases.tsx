@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Home, Car, GraduationCap, Wallet, Building, ShoppingBag } from "lucide-react";
+import ScrollReveal from "./animations/ScrollReveal";
+import StaggerContainer, { itemVariants } from "./animations/StaggerContainer";
 
 const useCases = [
   {
@@ -41,33 +43,11 @@ const useCases = [
 ];
 
 const UseCases = () => {
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute("data-index"));
-            setVisibleCards((prev) => [...new Set([...prev, index])]);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    const cards = sectionRef.current?.querySelectorAll(".usecase-card");
-    cards?.forEach((card) => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="use-cases" className="py-32 relative" ref={sectionRef}>
+    <section id="use-cases" className="py-32 relative">
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <ScrollReveal className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-4xl md:text-5xl font-serif mb-6">
             Power Any{" "}
             <span className="text-primary italic">Lending Product</span>
@@ -76,26 +56,25 @@ const UseCases = () => {
             From consumer loans to enterprise credit facilities, 
             our platform adapts to your unique lending requirements.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Use Cases Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {useCases.map((useCase, index) => (
-            <div
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.1}>
+          {useCases.map((useCase) => (
+            <motion.div
               key={useCase.title}
-              data-index={index}
-              className={`usecase-card relative group cursor-pointer ${
-                visibleCards.includes(index)
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms`, transition: "all 0.5s ease" }}
+              variants={itemVariants}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              className="relative group cursor-pointer"
             >
               <div className="relative p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500 h-full">
                 <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <motion.div 
+                    className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                  >
                     <useCase.icon className="w-7 h-7 text-primary" />
-                  </div>
+                  </motion.div>
 
                   <h3 className="text-xl font-serif mb-3 group-hover:text-primary transition-colors">{useCase.title}</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -119,9 +98,9 @@ const UseCases = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
