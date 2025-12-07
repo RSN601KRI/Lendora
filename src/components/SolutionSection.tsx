@@ -1,37 +1,38 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, Shield, Zap, BarChart3, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Brain, Shield, Zap, BarChart3, Code, Webhook } from "lucide-react";
 
 const features = [
   {
     icon: Brain,
-    title: "AI-Powered Decisioning",
-    description: "Machine learning models analyze 1000+ data points for accurate risk assessment in seconds.",
+    title: "Smart Decisioning",
+    description: "Machine learning models analyze 1000+ data points for accurate risk assessment. Handles wallet connection and gas estimation automatically.",
+  },
+  {
+    icon: BarChart3,
+    title: "Merchant Dashboard",
+    description: "Real-time analytics, customer management, and transaction history in a unified dark-mode view. Brand it with your own logo and colors.",
   },
   {
     icon: Zap,
-    title: "Instant Underwriting",
-    description: "Automated credit scoring and document verification reduces approval time from days to minutes.",
+    title: "Revenue Analytics",
+    description: "Track MRR, churn, and LTV with built-in visualization tools designed for lending metrics.",
+  },
+  {
+    icon: Webhook,
+    title: "Webhooks & API",
+    description: "Reliable event delivery for payment success, failed renewals, and dispute resolutions via webhooks.",
+  },
+  {
+    icon: Code,
+    title: "Cross-Platform SDK",
+    description: "Create checkout experiences that look stunning on any device. React, Vue, and vanilla JS supported.",
   },
   {
     icon: Shield,
     title: "Built-in Compliance",
     description: "Pre-configured for KYC, AML, and regulatory requirements across jurisdictions.",
   },
-  {
-    icon: BarChart3,
-    title: "Real-time Analytics",
-    description: "Comprehensive dashboards provide instant insights into portfolio health and performance.",
-  },
-];
-
-const benefits = [
-  "Reduce loan processing time by 90%",
-  "Decrease default rates by up to 35%",
-  "Lower operational costs by 60%",
-  "Serve 10x more customers without scaling headcount",
-  "Achieve 99.9% compliance accuracy",
-  "Launch new products in weeks, not months",
 ];
 
 const SolutionSection = () => {
@@ -39,38 +40,30 @@ const SolutionSection = () => {
 
   return (
     <section id="solution" className="py-32 relative overflow-hidden" ref={ref}>
-      {/* Background gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 blur-[150px] rounded-full" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/10 blur-[150px] rounded-full" />
-
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
         <div className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <span className="text-accent text-sm font-medium tracking-wider uppercase mb-4 block">
-            Our Solution
-          </span>
           <h2 className="text-4xl md:text-5xl font-serif mb-6">
-            Lendora: The{" "}
-            <span className="italic gradient-text">Intelligent</span> Way to Lend
+            Powerful features to{" "}
+            <span className="text-primary italic">simplify your lending</span>
           </h2>
           <p className="text-muted-foreground text-lg">
-            We've built the complete lending infrastructure that handles everything from 
-            application to disbursement, powered by cutting-edge AI.
+            Infrastructure grade tools for the next generation of lending, designed for scale.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className={`p-8 rounded-2xl glass border border-border/50 hover:border-primary/50 transition-all duration-500 card-hover group ${
+              className={`p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500 group ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${index * 100 + 100}ms` }}
             >
-              <div className="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <feature.icon className="w-7 h-7 text-background" />
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                <feature.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-serif mb-3">{feature.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
@@ -80,42 +73,82 @@ const SolutionSection = () => {
           ))}
         </div>
 
-        {/* Benefits & CTA */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className={`transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <h3 className="text-3xl font-serif mb-8">
-              Why Teams Choose <span className="gradient-text">Lendora</span>
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {benefits.map((benefit, index) => (
-                <div 
-                  key={benefit} 
-                  className="flex items-start gap-3"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <CheckCircle2 className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground text-sm">{benefit}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className={`relative transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="absolute -inset-2 gradient-bg rounded-3xl blur-xl opacity-30" />
-            <div className="relative glass rounded-3xl p-8 border border-border/50">
-              <h4 className="text-2xl font-serif mb-4">Ready to transform your lending?</h4>
+        {/* Developer Experience Section */}
+        <div className={`bg-card rounded-2xl border border-border p-8 md:p-12 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+                Developer Experience
+              </span>
+              <h3 className="text-3xl font-serif mb-4">
+                Integrated in minutes, <span className="text-primary">not weeks.</span>
+              </h3>
               <p className="text-muted-foreground mb-6">
-                Join leading financial institutions who've already modernized their lending 
-                operations with Lendora.
+                Our SDK abstracts away the complexity of underwriting, risk assessment, and compliance. 
+                Just drop in the component and start processing loans.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="gradient-bg border-0 hover:opacity-90 group">
-                  Get Started Free
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button variant="outline" className="bg-secondary/50 border-border">
-                  Book a Demo
-                </Button>
+              <div className="flex flex-wrap gap-3 mb-6">
+                <span className="bg-secondary px-4 py-2 rounded-full text-sm border border-border">
+                  Type-safe SDK
+                </span>
+                <span className="bg-secondary px-4 py-2 rounded-full text-sm border border-border">
+                  3-minute integration
+                </span>
+                <span className="bg-secondary px-4 py-2 rounded-full text-sm border border-border">
+                  Zero backend required
+                </span>
+              </div>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full group">
+                Read the documentation
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            {/* Code Preview */}
+            <div className="bg-background rounded-xl border border-border overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/50">
+                <span className="text-sm text-muted-foreground font-mono">App.tsx</span>
+                <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                  Copy
+                </button>
+              </div>
+              <div className="p-4 font-mono text-sm">
+                <div className="text-muted-foreground">
+                  <span className="text-primary">1</span>  <span className="text-muted-foreground">npm install lendora-sdk</span>
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">2</span>  
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">3</span>  <span className="text-blue-400">import</span> {"{ LoanButton }"} <span className="text-blue-400">from</span> <span className="text-green-400">"lendora-sdk"</span>;
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">4</span>  
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">5</span>  <span className="text-blue-400">function</span> <span className="text-yellow-400">LoanPage</span>() {"{"}
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">6</span>    <span className="text-blue-400">return</span> (
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">7</span>      {"<"}<span className="text-cyan-400">LoanButton</span>
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">8</span>        <span className="text-purple-400">amount</span>={"{"}<span className="text-orange-400">25000</span>{"}"}
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">9</span>        <span className="text-purple-400">currency</span>=<span className="text-green-400">"USD"</span>
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">10</span>      {"/>"}
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">11</span>    );
+                </div>
+                <div className="text-muted-foreground mt-1">
+                  <span className="text-primary">12</span>  {"}"}
+                </div>
               </div>
             </div>
           </div>
