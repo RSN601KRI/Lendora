@@ -1,8 +1,14 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, TrendingUp, Users, CreditCard } from "lucide-react";
+import { ArrowRight, Sparkles, TrendingUp, Users, CreditCard, Code } from "lucide-react";
 
 const Hero = () => {
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Subtle background effects */}
@@ -74,6 +80,7 @@ const Hero = () => {
             <Button
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all text-base px-8 py-6 group rounded-full font-medium"
+              onClick={() => scrollToSection("#contact")}
             >
               Get Started
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -81,8 +88,10 @@ const Hero = () => {
             <Button
               size="lg"
               variant="outline"
-              className="bg-secondary border-border hover:bg-secondary/80 text-base px-8 py-6 rounded-full"
+              className="bg-secondary border-border hover:bg-secondary/80 text-base px-8 py-6 rounded-full gap-2"
+              onClick={() => scrollToSection("#solution")}
             >
+              <Code className="w-4 h-4" />
               View SDK
             </Button>
           </motion.div>
