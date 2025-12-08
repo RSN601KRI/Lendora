@@ -78,17 +78,19 @@ const Hero = () => {
             transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Button
+              type="button"
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all text-base px-8 py-6 group rounded-full font-medium"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all text-base px-8 py-6 group rounded-full font-medium cursor-pointer"
               onClick={() => scrollToSection("#contact")}
             >
               Get Started
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
+              type="button"
               size="lg"
               variant="outline"
-              className="bg-secondary border-border hover:bg-secondary/80 text-base px-8 py-6 rounded-full gap-2"
+              className="bg-secondary border-border hover:bg-secondary/80 text-base px-8 py-6 rounded-full gap-2 cursor-pointer"
               onClick={() => scrollToSection("#solution")}
             >
               <Code className="w-4 h-4" />
