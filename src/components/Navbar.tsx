@@ -67,11 +67,18 @@ const Navbar = () => {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-3">
-          <Button variant="ghost" className="text-muted-foreground hover:text-foreground gap-2">
+          <Button 
+            variant="ghost" 
+            className="text-muted-foreground hover:text-foreground gap-2"
+            onClick={() => window.open("https://github.com/lendora-ai", "_blank")}
+          >
             <Github className="w-4 h-4" />
             GitHub
           </Button>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full">
+          <Button 
+            className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
+            onClick={() => scrollToSection("#contact")}
+          >
             Launch Demo
           </Button>
         </div>
@@ -105,11 +112,18 @@ const Navbar = () => {
             </button>
           ))}
           <div className="flex flex-col gap-3 pt-4 border-t border-border">
-            <Button variant="ghost" className="justify-start gap-2">
+            <Button 
+              variant="ghost" 
+              className="justify-start gap-2"
+              onClick={() => window.open("https://github.com/lendora-ai", "_blank")}
+            >
               <Github className="w-4 h-4" />
               GitHub
             </Button>
-            <Button className="bg-primary text-primary-foreground rounded-full">
+            <Button 
+              className="bg-primary text-primary-foreground rounded-full"
+              onClick={() => scrollToSection("#contact")}
+            >
               Launch Demo
             </Button>
           </div>
