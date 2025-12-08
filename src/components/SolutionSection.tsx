@@ -103,7 +103,11 @@ const SolutionSection = () => {
                     Zero backend required
                   </span>
                 </div>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full group">
+                <Button 
+                  type="button"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full group cursor-pointer"
+                  onClick={() => window.open("https://docs.lendora.io", "_blank")}
+                >
                   Read the documentation
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
