@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, TrendingUp, Users, CreditCard, Code } from "lucide-react";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
@@ -81,7 +84,7 @@ const Hero = () => {
               type="button"
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all text-base px-8 py-6 group rounded-full font-medium cursor-pointer"
-              onClick={() => scrollToSection("#contact")}
+              onClick={() => navigate("/auth")}
             >
               Get Started
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
