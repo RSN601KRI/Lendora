@@ -70,16 +70,19 @@ const Dashboard = () => {
       icon: Database,
       title: "Knowledge Graph",
       description: "Access and explore your structured financial data",
+      action: () => navigate("/#knowledge-graph"),
     },
     {
       icon: Code,
       title: "API Integration",
       description: "Connect with our SDK for seamless automation",
+      action: () => window.open("https://github.com/lendora-ai/lendora-sdk", "_blank"),
     },
     {
       icon: Zap,
       title: "Real-time Analytics",
       description: "Monitor lending decisions in real-time",
+      action: () => navigate("/#analytics"),
     },
   ];
 
@@ -138,6 +141,7 @@ const Dashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={feature.action}
                 className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-all group cursor-pointer"
               >
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
@@ -184,7 +188,7 @@ const Dashboard = () => {
                 type="button"
                 variant="outline"
                 className="rounded-full cursor-pointer"
-                onClick={() => window.open("https://github.com/lendora-ai", "_blank")}
+                onClick={() => window.open("https://github.com/lendora-ai/lendora-sdk", "_blank")}
               >
                 GitHub Repository
               </Button>
