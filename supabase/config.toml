@@ -1,1 +1,4 @@
 project_id = "fhybpgtbvgjrhqmunodi"
+
+[functions.loan-agent]
+verify_jwt = false
