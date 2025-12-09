@@ -70,19 +70,19 @@ const Dashboard = () => {
       icon: Database,
       title: "Knowledge Graph",
       description: "Access and explore your structured financial data",
-      action: () => navigate("/#knowledge-graph"),
+      action: () => navigate("/knowledge-graph"),
     },
     {
       icon: Code,
       title: "API Integration",
       description: "Connect with our SDK for seamless automation",
-      action: () => window.open("https://github.com/lendora-ai/lendora-sdk", "_blank"),
+      action: () => navigate("/api-integration"),
     },
     {
       icon: Zap,
       title: "Real-time Analytics",
       description: "Monitor lending decisions in real-time",
-      action: () => navigate("/#analytics"),
+      action: () => navigate("/realtime-analytics"),
     },
   ];
 
