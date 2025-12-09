@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProblemSection from "@/components/ProblemSection";
@@ -6,10 +6,14 @@ import SolutionSection from "@/components/SolutionSection";
 import KnowledgeGraph from "@/components/KnowledgeGraph";
 import UseCases from "@/components/UseCases";
 import ProofOfConcept from "@/components/ProofOfConcept";
+import TryDemoSection from "@/components/TryDemoSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import LoanChatbot from "@/components/chat/LoanChatbot";
 
 const Index = () => {
+  const [chatOpen, setChatOpen] = useState(false);
+
   useEffect(() => {
     document.title = "Lendora - AI-Powered Lending Infrastructure";
     
@@ -33,9 +37,13 @@ const Index = () => {
         <KnowledgeGraph />
         <UseCases />
         <ProofOfConcept />
+        <TryDemoSection onOpenChat={() => setChatOpen(true)} />
         <ContactSection />
       </main>
       <Footer />
+      
+      {/* AI Loan Chatbot */}
+      <LoanChatbot />
     </div>
   );
 };
