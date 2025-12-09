@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Github } from "lucide-react";
 import lendoraLogo from "@/assets/lendora-logo.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -79,7 +81,7 @@ const Navbar = () => {
           <Button 
             type="button"
             className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full cursor-pointer"
-            onClick={() => scrollToSection("#contact")}
+            onClick={() => navigate("/auth")}
           >
             Launch Demo
           </Button>
@@ -126,7 +128,7 @@ const Navbar = () => {
             <Button 
               type="button"
               className="bg-primary text-primary-foreground rounded-full cursor-pointer"
-              onClick={() => scrollToSection("#contact")}
+              onClick={() => navigate("/auth")}
             >
               Launch Demo
             </Button>
