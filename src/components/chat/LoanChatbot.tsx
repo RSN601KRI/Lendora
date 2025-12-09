@@ -3,19 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useChatAnalytics } from "@/hooks/useChatAnalytics";
 import { 
   MessageSquare, 
   X, 
   Send, 
   Bot, 
   User, 
-  Loader2,
-  Users,
-  Shield,
-  FileCheck,
-  FileText,
-  ChevronDown,
-  Sparkles
+  Loader2
 } from "lucide-react";
 import AgentProgress from "./AgentProgress";
 import MockProfileSelector from "./MockProfileSelector";
@@ -41,9 +36,17 @@ const LoanChatbot = () => {
   const [profileType, setProfileType] = useState<ProfileType>(null);
   const [loanDetails, setLoanDetails] = useState<LoanDetails>({ amount: 25000, term: 36, purpose: "Personal" });
   const [showProfileSelector, setShowProfileSelector] = useState(true);
-  const [startTime, setStartTime] = useState<Date | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { 
+    startSession, 
+    trackStage, 
+    trackMessage, 
+    endSession, 
+    getElapsedTime, 
+    resetAnalytics,
+    analytics 
+  } = useChatAnalytics();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -67,6 +70,17 @@ const LoanChatbot = () => {
     }
     if (lowerContent.includes("loan amount") || lowerContent.includes("interest") || lowerContent.includes("how much") || lowerContent.includes("borrow")) {
       return "SALES";
+    }
+    return null;
+  };
+
+  const detectOutcome = (content: string): "approved" | "rejected" | null => {
+    const lowerContent = content.toLowerCase();
+    if (lowerContent.includes("approved") || lowerContent.includes("congratulations")) {
+      return "approved";
+    }
+    if (lowerContent.includes("rejected") || lowerContent.includes("unfortunately") || lowerContent.includes("not able to approve")) {
+      return "rejected";
     }
     return null;
   };
@@ -146,10 +160,20 @@ const LoanChatbot = () => {
         }
       }
 
+      // Track message
+      trackMessage();
+
       // Detect stage transition
       const newStage = detectStageTransition(assistantContent);
       if (newStage && newStage !== stage) {
         setStage(newStage);
+        trackStage(newStage);
+      }
+
+      // Detect outcome for analytics
+      const outcome = detectOutcome(assistantContent);
+      if (outcome) {
+        endSession(outcome);
       }
 
     } catch (error) {
@@ -170,14 +194,15 @@ const LoanChatbot = () => {
     
     const message = input.trim();
     setInput("");
+    trackMessage();
     streamChat(message);
   };
 
   const startDemo = (profile: ProfileType) => {
     setProfileType(profile);
     setShowProfileSelector(false);
-    setStartTime(new Date());
     setStage("GREETING");
+    startSession(profile || "unknown");
     
     // Initial greeting
     streamChat("Hello, I'm interested in getting a personal loan.");
@@ -188,15 +213,10 @@ const LoanChatbot = () => {
     setStage("GREETING");
     setProfileType(null);
     setShowProfileSelector(true);
-    setStartTime(null);
-  };
-
-  const getElapsedTime = () => {
-    if (!startTime) return "0:00";
-    const elapsed = Math.floor((new Date().getTime() - startTime.getTime()) / 1000);
-    const minutes = Math.floor(elapsed / 60);
-    const seconds = elapsed % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (analytics.startTime && !analytics.completed) {
+      endSession("abandoned");
+    }
+    resetAnalytics();
   };
 
   return (
@@ -234,7 +254,7 @@ const LoanChatbot = () => {
                 <div>
                   <h3 className="font-semibold">Lendora AI</h3>
                   <p className="text-xs opacity-80">
-                    {startTime ? `Demo Time: ${getElapsedTime()}` : "Try the loan journey demo"}
+                    {analytics.startTime ? `Demo Time: ${getElapsedTime()}` : "Try the loan journey demo"}
                   </p>
                 </div>
               </div>
@@ -287,7 +307,9 @@ const LoanChatbot = () => {
                             : "bg-secondary text-foreground"
                         }`}
                       >
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        <p className="text-sm whitespace-pre-wrap">
+                          {msg.content.replace(/\*+/g, '')}
+                        </p>
                       </div>
                       {msg.role === "user" && (
                         <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
