@@ -171,7 +171,7 @@ The system follows a modular, scalable **Agentic Orchestration Architecture** wi
 
 ## 📎 **Project Links**
 
-* [GitHub Repository]()
+* [GitHub Repository](https://github.com/RSN601KRI/Lendora)
 * [Demo Link](https://lendora-dashboard.vercel.app/)
 * Figma Wireframes: https://www.figma.com/board/Hp6zEyCsIR6OeC7FZT9KOM/FinGenie-UX-Flow-Diagram--
 Customer-Journey-?node-id=0-1&p=f
