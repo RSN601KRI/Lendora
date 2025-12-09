@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useChatAnalytics } from "@/hooks/useChatAnalytics";
+import { downloadSanctionLetter } from "@/utils/pdfGenerator";
 import { 
   MessageSquare, 
   X, 
   Send, 
   Bot, 
   User, 
-  Loader2
+  Loader2,
+  Download
 } from "lucide-react";
 import AgentProgress from "./AgentProgress";
 import MockProfileSelector from "./MockProfileSelector";
+import VoiceInput from "./VoiceInput";
 
 type Message = { role: "user" | "assistant"; content: string };
 type Stage = "GREETING" | "SALES" | "VERIFICATION" | "UNDERWRITING" | "SANCTION";
@@ -335,14 +338,65 @@ const LoanChatbot = () => {
 
             {/* Input */}
             {!showProfileSelector && (
-              <form onSubmit={handleSubmit} className="p-4 border-t border-border">
-                <div className="flex gap-2">
+              <div className="p-4 border-t border-border space-y-3">
+                {/* Download Button - Show when sanction stage is reached */}
+                {stage === "SANCTION" && analytics.outcome && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const profile = profileType ? {
+                        excellent: { name: "Sarah Johnson", creditScore: 780 },
+                        good: { name: "Michael Chen", creditScore: 720 },
+                        borderline: { name: "Emily Rodriguez", creditScore: 650 },
+                        rejected: { name: "James Wilson", creditScore: 520 },
+                      }[profileType] : { name: "Demo User", creditScore: 700 };
+
+                      const approved = analytics.outcome === "approved";
+                      const interestRate = profile.creditScore >= 750 ? 8.99 : 
+                                          profile.creditScore >= 700 ? 10.99 : 
+                                          profile.creditScore >= 650 ? 12.99 : 14.99;
+                      const monthlyRate = interestRate / 100 / 12;
+                      const emi = (loanDetails.amount * monthlyRate * Math.pow(1 + monthlyRate, loanDetails.term)) / 
+                                 (Math.pow(1 + monthlyRate, loanDetails.term) - 1);
+
+                      downloadSanctionLetter({
+                        applicantName: profile.name,
+                        loanAmount: loanDetails.amount,
+                        interestRate,
+                        term: loanDetails.term,
+                        emi,
+                        purpose: loanDetails.purpose,
+                        creditScore: profile.creditScore,
+                        approved,
+                        rejectionReasons: approved ? undefined : [
+                          "Credit score below minimum threshold",
+                          "Insufficient employment history",
+                          "High debt-to-income ratio"
+                        ],
+                        date: new Date(),
+                      });
+                    }}
+                    className="w-full cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download {analytics.outcome === "approved" ? "Sanction" : "Decision"} Letter (PDF)
+                  </Button>
+                )}
+                
+                <form onSubmit={handleSubmit} className="flex gap-2">
                   <Input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type your message..."
                     disabled={isLoading}
                     className="flex-1"
+                  />
+                  <VoiceInput 
+                    onTranscript={(text) => {
+                      setInput(text);
+                    }} 
+                    disabled={isLoading}
                   />
                   <Button
                     type="submit"
@@ -352,8 +406,8 @@ const LoanChatbot = () => {
                   >
                     <Send className="w-4 h-4" />
                   </Button>
-                </div>
-              </form>
+                </form>
+              </div>
             )}
           </motion.div>
         )}
